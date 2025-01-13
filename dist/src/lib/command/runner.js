@@ -9,19 +9,13 @@ const File_1 = __importDefault(require("../sys/File"));
 const node_assert_1 = __importDefault(require("node:assert"));
 const path_1 = require("../helper/path");
 function commandToClsAndMethod(base, command, def = 'default') {
-    var _a, _b;
     if (!(!!command)) {
         const self = require('../../command/ecli').default;
         return ['index', self, new self];
     }
     const splitted = command.split('.');
     let method = 'index', path = base;
-    if (File_1.default.isFile({
-        path: (0, path_1.joinPaths)(path, ...[
-            ...((_a = splitted.slice(0, splitted.length - 1)) !== null && _a !== void 0 ? _a : []),
-            ...(splitted.length ? [((_b = splitted.at(splitted.length - 1)) !== null && _b !== void 0 ? _b : '') + '.ts'] : [])
-        ])
-    })) {
+    if (File_1.default.isFile({ path: (0, path_1.joinPaths)(path, ...splitted.map((e, i) => i + 1 === splitted.length ? e + '.ts' : e)) })) {
         path = (0, path_1.joinPaths)(path, ...splitted);
     }
     else {
