@@ -15,6 +15,7 @@ function commandToClsAndMethod(base, command, def = 'default') {
     }
     const splitted = command.split('.');
     let method = 'index', path = base;
+    console.log((0, path_1.joinPaths)(path, ...splitted.map((e, i) => i + 1 === splitted.length ? e + '.ts' : e)));
     if (File_1.default.isFile({ path: (0, path_1.joinPaths)(path, ...splitted.map((e, i) => i + 1 === splitted.length ? e + '.ts' : e)) })) {
         path = (0, path_1.joinPaths)(path, ...splitted);
     }

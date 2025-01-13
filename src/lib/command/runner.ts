@@ -13,7 +13,7 @@ export function commandToClsAndMethod(base: string, command: string, def = 'defa
     const splitted = command.split('.');
     let method = 'index',
         path = base;
-
+    console.log(joinPaths(path, ...splitted.map((e, i) => i + 1 === splitted.length ? e + '.ts' : e)));
     if (File.isFile({path: joinPaths(path, ...splitted.map((e, i) => i + 1 === splitted.length ? e + '.ts' : e))})) {
         path = joinPaths(path, ...splitted);
     } else {
