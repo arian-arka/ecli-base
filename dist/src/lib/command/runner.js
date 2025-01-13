@@ -8,33 +8,33 @@ const Args_1 = require("./Args");
 const File_1 = __importDefault(require("../sys/File"));
 const node_assert_1 = __importDefault(require("node:assert"));
 const path_1 = require("../helper/path");
-function commandToClsAndMethod(command, def = 'default') {
+function commandToClsAndMethod(base, command, def = 'default') {
     var _a, _b;
     if (!(!!command)) {
         const self = require('../../command/ecli').default;
         return ['index', self, new self];
     }
     const splitted = command.split('.');
-    let method = 'index', path = '../command/';
+    let method = 'index', path = base;
     if (File_1.default.isFile({
-        path: (0, path_1.basePath)('src', 'command', ...[
+        path: (0, path_1.joinPaths)(path, ...[
             ...((_a = splitted.slice(0, splitted.length - 1)) !== null && _a !== void 0 ? _a : []),
             ...(splitted.length ? [((_b = splitted.at(splitted.length - 1)) !== null && _b !== void 0 ? _b : '') + '.ts'] : [])
         ])
     })) {
-        path += splitted.join('/');
+        path = (0, path_1.joinPaths)(path, ...splitted);
     }
     else {
         (0, node_assert_1.default)(splitted.length > 1, 'Invalid command');
         method = splitted[splitted.length - 1];
-        path += splitted.slice(0, splitted.length - 1).join('/');
+        path += (0, path_1.joinPaths)(path, ...splitted.slice(0, splitted.length - 1));
     }
     const cls = require(path)[def];
     return [method, cls, new cls];
 }
 exports.commandToClsAndMethod = commandToClsAndMethod;
-async function run(command, args) {
-    const [method, cls, obj] = commandToClsAndMethod(command);
+async function run(base, command, args) {
+    const [method, cls, obj] = commandToClsAndMethod(base, command);
     try {
         return {
             result: await obj[method](args),
@@ -49,13 +49,13 @@ async function run(command, args) {
     }
 }
 exports.run = run;
-async function runCli(stdout = true) {
+async function runCli(base, stdout = true) {
     if (stdout) {
         console.log('base path: ', (0, path_1.basePath)());
     }
     if (!Args_1.command)
         return '';
-    const output = await run(Args_1.command, Args_1.args);
+    const output = await run(base, Args_1.command, Args_1.args);
     if (stdout) {
         console.log('Status: ', output.ok ? 'OK' : 'ERROR');
         console.log('Result:');
