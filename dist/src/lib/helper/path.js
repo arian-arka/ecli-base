@@ -16,7 +16,8 @@ function setBasePath(path) {
 }
 exports.setBasePath = setBasePath;
 function joinPaths(...args) {
-    return node_path_1.default.join(...args);
+    //@ts-ignore
+    return node_path_1.default.join(...args).replaceAll('\\', '/');
 }
 exports.joinPaths = joinPaths;
 function basePath(...args) {
