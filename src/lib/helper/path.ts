@@ -10,7 +10,8 @@ export function setBasePath(path : string){
 }
 
 export function joinPaths(...args:string[]) : string {
-    return path.join(...args);
+    //@ts-ignore
+    return path.join(...args).replaceAll('\\','/');
 }
 export function basePath(...args : string[]) : string{
     return joinPaths(__base,...args);

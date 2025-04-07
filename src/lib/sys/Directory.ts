@@ -41,5 +41,6 @@ export default class Directory {
         if (!Directory.exists({path: props.path}))
             Directory.create({path: props.path, recursive: props.recursive ?? true});
     }
+
 }
 
