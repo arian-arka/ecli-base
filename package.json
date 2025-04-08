@@ -8,9 +8,6 @@
     "build": "rm -r \"dist\" && tsc",
     "push" : "npm run build && git add -A && git commit -m \"message\" && git push"
   },
-  "files": [
-    "/dist"
-  ],
   "author": "",
   "bugs": {
     "url": "https://github.com/arian-arka/ecli-base/issues"
